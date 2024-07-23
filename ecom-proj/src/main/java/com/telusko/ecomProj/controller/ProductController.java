@@ -10,8 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.telusko.ecomProj.model.Product;
 import com.telusko.ecomProj.service.ProductService;
@@ -49,5 +53,22 @@ public class ProductController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
+
+//---Add New Product -------------------------------------------------	
+	
+	@PutMapping("/product")
+	public ResponseEntity<?> addProduct(@RequestPart Product product,
+										@RequestPart MultipartFile imageFile)
+	{
+		try 
+		{
+			Product product1 = proService.addProduct(product,imageFile);
+			return new ResponseEntity<>(product1,HttpStatus.CREATED);
+			
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 	
 }
