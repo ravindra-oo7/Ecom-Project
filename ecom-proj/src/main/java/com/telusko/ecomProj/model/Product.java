@@ -3,6 +3,9 @@ package com.telusko.ecomProj.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,6 +29,8 @@ public class Product {
 	private String brand;
 	private BigDecimal price;
 	private String category;
+	
+	@JsonFormat(shape = Shape.STRING,pattern = "dd-MM-yyyy")
 	private Date releasedDate;
 	private boolean available;
 	private int quantity;
