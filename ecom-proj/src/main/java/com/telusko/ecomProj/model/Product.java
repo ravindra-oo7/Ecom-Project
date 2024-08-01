@@ -26,15 +26,15 @@ public class Product {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String name;
-	private String desc;
+	private String description;
 	private String brand;
 	private BigDecimal price;
 	private String category;
 	
 	@JsonFormat(shape = Shape.STRING,pattern = "dd-MM-yyyy")
-	private Date releasedDate;
-	private boolean available;
-	private int quantity;
+	private Date releasedDate; 
+	private boolean productAvailable;
+	private int stockQuantity;
 	
 	private String imageName;
 	private String imageType;
