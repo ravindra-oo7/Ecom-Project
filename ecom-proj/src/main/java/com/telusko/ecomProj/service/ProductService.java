@@ -36,8 +36,18 @@ public class ProductService {
 		product.setImageName(imageFile.getOriginalFilename());
 		product.setImageType(imageFile.getContentType());
 		product.setImageData(imageFile.getBytes());
-		
+		     
 		return proRepo.save(product);
+	}
+
+//---Update Product By Id--------------------------------------------------
+	
+	public Product updateProduct(int prodId, Product product, MultipartFile imgFile) 
+	{
+		Product productFinal = proRepo.findById(prodId).orElse(null);
+		productFinal.set
+		proRepo.save(productFinal);
+		
 	}
 	
 

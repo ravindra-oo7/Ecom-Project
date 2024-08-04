@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -67,7 +68,7 @@ public class ProductController {
 		{
 			Product product = mapper.readValue(productString, Product.class);
 			Product product1 = proService.addProduct(product,imageFile);
-			return new ResponseEntity<>(product1,HttpStatus.CREATED);
+			return new ResponseEntity<>(product1,HttpStatus.CREATED); 
 			
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
@@ -85,6 +86,21 @@ public class ProductController {
 		return ResponseEntity.ok()
 								.contentType(MediaType.valueOf(product.getImageType()))
 								.body(imageFile);
+	}
+	
+//---Update Product By Id--------------------------------------------------
+	
+	@PutMapping("/product/{id}")
+	public ResponseEntity<String> updateProduct(@PathVariable int id,
+												@RequestPart Product product,
+												@RequestPart MultipartFile imgFile)
+	{	
+		Product product1 = proService.updateProduct(id,product,imgFile);
+		if(product1 != null)
+			return new ResponseEntity<>("Updated",HttpStatus.OK);
+		else
+			return new ResponseEntity<>("Failed to Update",HttpStatus.BAD_REQUEST);
+				
 	}
 	
 }
