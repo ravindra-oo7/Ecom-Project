@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -42,12 +43,20 @@ public class ProductService {
 
 //---Update Product By Id--------------------------------------------------
 	
-	public Product updateProduct(int prodId, Product product, MultipartFile imgFile) 
+	public Product updateProduct(int prodId, Product product, MultipartFile imgFile) throws IOException 
 	{
-		Product productFinal = proRepo.findById(prodId).orElse(null);
-		productFinal.set
-		proRepo.save(productFinal);
+		product.setImageData(imgFile.getBytes());
+		product.setImageName(imgFile.getName());
+		product.setImageType(imgFile.getContentType());
+		return proRepo.save(product);
 		
+	}
+
+//---Update Product By Id--------------------------------------------------
+	
+	public void deleteProduct(int proId) 
+	{
+		proRepo.deleteById(proId);
 	}
 	
 

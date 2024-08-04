@@ -1,5 +1,6 @@
 package com.telusko.ecomProj.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -90,17 +92,43 @@ public class ProductController {
 	
 //---Update Product By Id--------------------------------------------------
 	
-	@PutMapping("/product/{id}")
-	public ResponseEntity<String> updateProduct(@PathVariable int id,
+	@PutMapping("/product/{proId}")
+	public ResponseEntity<String> updateProduct(@PathVariable int proId,
 												@RequestPart Product product,
 												@RequestPart MultipartFile imgFile)
 	{	
-		Product product1 = proService.updateProduct(id,product,imgFile);
-		if(product1 != null)
+		Product productUpdated;
+		
+		try 
+		{
+			productUpdated = proService.updateProduct(proId,product,imgFile);
+		} 
+		catch (IOException e) 
+		{
+			return new ResponseEntity<>("Failed to Update",HttpStatus.BAD_REQUEST);
+		}
+		if(productUpdated != null)
 			return new ResponseEntity<>("Updated",HttpStatus.OK);
 		else
 			return new ResponseEntity<>("Failed to Update",HttpStatus.BAD_REQUEST);
 				
+	}
+	
+//---Update Product By Id--------------------------------------------------
+	
+	@DeleteMapping("/product/{proId}")
+	public ResponseEntity<String> deleteProduct(@PathVariable int proId)
+	{
+		Product product = proService.getProductByID(proId);
+		if(product!=null)
+		{
+			proService.deleteProduct(proId);
+			return new ResponseEntity<>("Product Deleted Successfully ",HttpStatus.OK);
+		}
+		else
+		{
+			return new ResponseEntity<>("Product Not Found!!!",HttpStatus.NOT_FOUND);
+		}
 	}
 	
 }
