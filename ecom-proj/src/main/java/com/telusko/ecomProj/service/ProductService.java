@@ -45,6 +45,7 @@ public class ProductService {
 	
 	public Product updateProduct(int prodId, Product product, MultipartFile imgFile) throws IOException 
 	{
+		product.setId(prodId);
 		product.setImageData(imgFile.getBytes());
 		product.setImageName(imgFile.getName());
 		product.setImageType(imgFile.getContentType());
@@ -52,7 +53,7 @@ public class ProductService {
 		
 	}
 
-//---Update Product By Id--------------------------------------------------
+//---Delete Product By Id--------------------------------------------------
 	
 	public void deleteProduct(int proId) 
 	{

@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.telusko.ecomProj.model.Product;
 import com.telusko.ecomProj.service.ProductService;
@@ -94,9 +96,23 @@ public class ProductController {
 	
 	@PutMapping("/product/{proId}")
 	public ResponseEntity<String> updateProduct(@PathVariable int proId,
-												@RequestPart Product product,
+												@RequestPart String prodString,
 												@RequestPart MultipartFile imgFile)
 	{	
+		Product product;
+		try 
+		{
+			product = mapper.readValue(prodString, Product.class);
+		} 
+		catch (JsonMappingException e1) 
+		{
+			return new ResponseEntity<> ("Json Mapping Failed",HttpStatus.INTERNAL_SERVER_ERROR);
+		} 
+		catch (JsonProcessingException e1) 
+		{
+			return new ResponseEntity<> ("Json Parsing Failed",HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
 		Product productUpdated;
 		
 		try 
@@ -114,7 +130,7 @@ public class ProductController {
 				
 	}
 	
-//---Update Product By Id--------------------------------------------------
+//---Delete Product By Id--------------------------------------------------
 	
 	@DeleteMapping("/product/{proId}")
 	public ResponseEntity<String> deleteProduct(@PathVariable int proId)
