@@ -59,6 +59,14 @@ public class ProductService {
 	{
 		proRepo.deleteById(proId);
 	}
+
+//---Search --------------------------------------------------
+	
+	
+	public List<Product> searchProduct(String keyword) {
+
+		return proRepo.searchProduct(keyword);
+	}
 	
 
 }

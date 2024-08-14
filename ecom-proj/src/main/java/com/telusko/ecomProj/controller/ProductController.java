@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -65,12 +66,14 @@ public class ProductController {
 //---Add New Product -------------------------------------------------	
 	
 	@PostMapping("/product")
-	public ResponseEntity<?> addProduct(@RequestPart String productString,
+	public ResponseEntity<?> addProduct(@RequestPart Product product,
 										@RequestPart MultipartFile imageFile)
 	{
 		try 
 		{
-			Product product = mapper.readValue(productString, Product.class);
+			
+//			Product product = mapper.readValue(productString, Product.class);
+			
 			Product product1 = proService.addProduct(product,imageFile);
 			return new ResponseEntity<>(product1,HttpStatus.CREATED); 
 			
@@ -96,23 +99,9 @@ public class ProductController {
 	
 	@PutMapping("/product/{proId}")
 	public ResponseEntity<String> updateProduct(@PathVariable int proId,
-												@RequestPart String prodString,
+												@RequestPart Product product,
 												@RequestPart MultipartFile imgFile)
-	{	
-		Product product;
-		try 
-		{
-			product = mapper.readValue(prodString, Product.class);
-		} 
-		catch (JsonMappingException e1) 
-		{
-			return new ResponseEntity<> ("Json Mapping Failed",HttpStatus.INTERNAL_SERVER_ERROR);
-		} 
-		catch (JsonProcessingException e1) 
-		{
-			return new ResponseEntity<> ("Json Parsing Failed",HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		
+	{			
 		Product productUpdated;
 		
 		try 
@@ -131,7 +120,7 @@ public class ProductController {
 	}
 	
 //---Delete Product By Id--------------------------------------------------
-	
+	   
 	@DeleteMapping("/product/{proId}")
 	public ResponseEntity<String> deleteProduct(@PathVariable int proId)
 	{
@@ -145,6 +134,18 @@ public class ProductController {
 		{
 			return new ResponseEntity<>("Product Not Found!!!",HttpStatus.NOT_FOUND);
 		}
+	}
+
+//---Search--------------------------------------------------------------
+	
+	@GetMapping("/products/search")
+	public ResponseEntity<List<Product>> searchProducts(@RequestParam String keyword){
+	
+		List<Product> products = proService.searchProduct(keyword);
+		
+		return new ResponseEntity<>(products,HttpStatus.FOUND);
+				
+		
 	}
 	
 }
