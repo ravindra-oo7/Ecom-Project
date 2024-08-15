@@ -10,7 +10,7 @@ import com.telusko.ecomProj.model.Product;
 
 
 @Repository
-public interface ProductRepo extends JpaRepository<Product, Integer> 
+public interface ProductRepo extends JpaRepository<Product,Integer> 
 {
 	@Query("SELECT p from Product p WHERE "+
 		   "LOWER(p.name) LIKE LOWER(CONCAT('%',:keyword,'%')) OR "+
@@ -18,5 +18,5 @@ public interface ProductRepo extends JpaRepository<Product, Integer>
 		   "LOWER(p.brand) LIKE LOWER(CONCAT('%',:keyword,'%')) OR "+
 		   "LOWER(p.category) LIKE LOWER(CONCAT('%',:keyword,'%'))"
 		)
-	List<Product> searchProduct(String keyword);
+	List<Product> searchProducts(String keyword);
 }

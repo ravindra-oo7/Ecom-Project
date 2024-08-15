@@ -63,9 +63,9 @@ public class ProductService {
 //---Search --------------------------------------------------
 	
 	
-	public List<Product> searchProduct(String keyword) {
+	public List<Product> searchProducts(String keyword) {
 
-		return proRepo.searchProduct(keyword);
+		return proRepo.searchProducts(keyword);
 	}
 	
 
